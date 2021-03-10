@@ -78,6 +78,9 @@
     * <https://github.com/georust/gdal/pull/144>
 * Fixed memory leak in `Geometry::from_wkt`
     * <https://github.com/georust/gdal/pull/172>
+* Add `Geometry::from_wkb` and `Geometry::wkb` functions to convert from/to
+  Well-Known Binary
+    * <https://github.com/georust/gdal/pull/173>
 
 ## 0.7.1
 * fix docs.rs build for gdal-sys
