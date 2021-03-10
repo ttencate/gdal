@@ -75,9 +75,11 @@ impl Geometry {
     /// [WKT](https://en.wikipedia.org/wiki/Well-known_text) string.
     pub fn from_wkt(wkt: &str) -> Result<Geometry> {
         let c_wkt = CString::new(wkt)?;
-        let mut c_wkt_ptr = c_wkt.into_raw();
+        let c_wkt_ptr = c_wkt.into_raw();
+        let mut c_wkt_end_ptr = c_wkt_ptr; // The pointer is updated to point just beyond the consumed bytes.
         let mut c_geom = null_mut();
-        let rv = unsafe { gdal_sys::OGR_G_CreateFromWkt(&mut c_wkt_ptr, null_mut(), &mut c_geom) };
+        let rv = unsafe { gdal_sys::OGR_G_CreateFromWkt(&mut c_wkt_end_ptr, null_mut(), &mut c_geom) };
+        unsafe { CString::from_raw(c_wkt_ptr); }
         if rv != OGRErr::OGRERR_NONE {
             return Err(GdalError::OgrError {
                 err: rv,
